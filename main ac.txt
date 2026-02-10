@@ -1,0 +1,63 @@
+package com.poymanova.test1
+
+import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.text.InputType
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_registration)
+
+        val email = findViewById<EditText>(R.id.et1)
+        val password = findViewById<EditText>(R.id.et2)
+        val passwordRepeat = findViewById<EditText>(R.id.et3)
+        val buttonPhone = findViewById<Button>(R.id.btn1)
+        val buttonEmail = findViewById<Button>(R.id.btn2)
+        val buttonRegister = findViewById<Button>(R.id.btn3)
+
+        var isEmailMode = true
+
+        buttonEmail.setOnClickListener {
+            isEmailMode = true
+            email.hint = "Введите Email"
+            email.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            buttonEmail.setTextColor(Color.parseColor("#da70d6"))
+            buttonPhone.setTextColor(Color.GRAY)
+        }
+
+        buttonPhone.setOnClickListener {
+            isEmailMode = false
+            email.hint = "Введите телефон"
+            email.inputType = InputType.TYPE_CLASS_PHONE
+            buttonPhone.setTextColor(Color.parseColor("#da70d6"))
+            buttonEmail.setTextColor(Color.GRAY)
+        }
+
+        buttonRegister.setOnClickListener {
+            val contact = email.text.toString()
+            val pass = password.text.toString()
+            val passRep = passwordRepeat.text.toString()
+
+            if (isEmailMode && !contact.contains("@")) {
+                Toast.makeText(this, "В email нет @", Toast.LENGTH_LONG).show()
+            }
+
+            else if (!isEmailMode && !contact.contains("+")) {
+                Toast.makeText(this, "В телефоне нет +", Toast.LENGTH_LONG).show()
+            }
+
+            else if (pass.length < 8) {
+                Toast.makeText(this, "Пароль слишком короткий", Toast.LENGTH_LONG).show()
+            }
+
+            else if (pass != passRep) {
+                Toast.makeText(this, "Пароли не совпадают", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
